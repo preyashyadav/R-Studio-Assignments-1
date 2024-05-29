@@ -1,0 +1,116 @@
+```{r}
+library("dplyr")
+
+data <- data.frame(
+  x1=1:6,
+  x2=c(1,2,2,3,1,2),
+  x3=c("F","B","C","E","A","D")
+  
+)
+data
+
+
+```
+
+```{r}
+arrange(data,x3)
+```
+```{r}
+filter(data, x2==2)
+```
+```{r}
+mutate(data, x4=x1+x2)
+```
+```{r}
+pull(data,x2)
+```
+```{r}
+rename(data,new_name=x3)
+```
+```{r}
+set.seed(29)
+sample_n(data,3)
+```
+```{r}
+select(data,x3)
+```
+```{r}
+getwd()
+```
+```{r}
+list.files()
+```
+```{r}
+read.table("Datasample.txt", header = FALSE, sep ="")
+```
+```{r}
+x <- c(1,5,3,2)
+y <- c(7,8,3,4)
+z <- c(3, 4,5 ,6)
+
+data<- cbind(x,y,z)
+
+write.csv(data, file="PreyashWrite.csv", row.names = FALSE)
+
+```
+
+```{r}
+read.csv("PreyashWrite.csv", header= FALSE, sep="")
+```
+```{r}
+df= data.frame(
+  "Name" = c("Preyash", "Spidey", "Spoidermon"),
+  "Stacks"= c("MERN", "MEAN", "LAMP"),
+  "Experience" =c("999+ hrs", "499+ hrs", "299+ hrs")
+)
+
+write.table(df, 
+            file="PreyashDevChart.txt",
+            sep="/t",
+            row.names=TRUE,
+            col.names=NA
+            )
+
+```
+```{r}
+data("mtcars")
+cars <- mtcars
+cars
+```
+```{r}
+head(mtcars, 4)
+```
+```{r}
+tail(mtcars,4)
+```
+```{r}
+str(mtcars)
+```
+
+```{r}
+names(mtcars)
+```
+```{r}
+rownames(mtcars)
+```
+```{r}
+v1 = mtcars$disp
+```
+
+```{r}
+v2<- mtcars$mpg
+v3<- mtcars$cyl
+v4<- mtcars$disp
+
+```
+```{r}
+mtcars1 <- rbind(v2, v3, v4)
+mtcars1
+```
+```{r}
+
+
+
+
+```
+

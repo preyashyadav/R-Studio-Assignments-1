@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+Supermarket <- data.frame(
+  RU= c("RU1","RU2","RU3","RU4","RU5","RU6","RU7"),
+  X = c(62.5, 55.0, 91.0, 74.0, 94.0, 78.0, 69.0),
+  Y= c(18, 124, 188, 149, 189, 167, 149.5)
+)
+plot(x=Supermarket$X, y=Supermarket$Y, xlab ="Half yearly Profit ", ylab="Annual Profit", col="blue", cex= 1)
+text(Supermarket$X, Supermarket$Y, labels=Supermarket$RU)
+
+
+
+```
+```{r}
+relation <- lm(Supermarket$Y~Supermarket$X)
+print(relation)
+#plot(relation)
+```
+```{r}
+
+a <- data.frame(x = 98)
+result <-  predict(relation,a)
+print(result)
+
+```
+

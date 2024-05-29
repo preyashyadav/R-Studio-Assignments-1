@@ -1,0 +1,181 @@
+---
+title: "20BPS1022 PREYASH _ 07 Oct 2022"
+output:
+  word_document: default
+  html_notebook: default
+---
+
+```{r}
+library(missForest)
+library(mice)
+library(MASS)
+library("dplyr")
+
+```
+
+```{r}
+#Q1
+#installing missForest package for using prodNA function 
+#function to induce missing values to a dataset
+x=head(iris,n=10)
+y=prodNA(x,noNA=0.15)
+y
+
+#removing categorical data
+y=y[,1:4]
+y
+
+#using mice package now
+md.pattern(y)
+
+#imputing data
+imputed_data=mice(y, m=5, maxit = 50, method = 'pmm', seed = 500)
+completedata=complete(imputed_data,2)
+completedata
+```
+
+```{r}
+#Q2
+#using first 10 rows of iris dataset 
+x=x[,1:4]
+cor(x$Sepal.Length,x$Petal.Length)
+cor(x)
+```
+
+```{r}
+#2
+dim(survey)
+which(!complete.cases(survey))
+```
+```{r}
+#3
+good=complete.cases(survey)
+new_survey=survey[good,]
+new_survey
+```
+```{r}
+#4
+table(new_survey['Sex'])
+```
+```{r}
+#5
+table(new_survey['W.Hnd'])
+
+```
+
+```{r}
+#
+sprintf(table(new_survey$`W.Hnd`)/length(new_survey$`W.Hnd`), fmt = '%#.3f') 
+
+```
+
+```{r}
+#7
+data1=new_survey[new_survey$`W.Hnd` == 'Left',c("Sex","W.Hnd")]
+data1
+```
+
+```{r}
+#8
+never_smoke_male=sum(new_survey$Sex=="Male" & new_survey$`W.Hnd`=="Left" & new_survey $Smoke=="Never")
+total_male=sum(new_survey$Sex=="Male")
+percentage=(never_smoke_male*100)/total_male
+percentage
+```
+```{r}
+#1
+#range of the age
+age=new_survey$Age
+range(age)
+```
+```{r}
+#2
+#nearest integer can be 16 70
+breaks = seq(16, 71, by=6.1)
+breaks
+```
+```{r}
+#3
+age.cut = cut(age, breaks, right=FALSE)
+age.cut
+```
+```{r}
+#4
+age.freq=table(age.cut)
+cbind(age.freq)
+which(age.freq==max(age.freq))
+```
+```{r}
+#5
+w=new_survey$Wr.Hnd
+range(w)
+break_w = seq(13, 25, by=2.0)
+w.cut = cut(w, break_w, right=FALSE)
+w.freq=table(w.cut)
+cbind(w.freq)
+```
+```{r}
+#6
+cbind(w.freq/length(w.cut))
+```
+
+
+```{r}
+#1
+avg_age=mean(age)
+avg_age
+```
+```{r}
+#2
+h=new_survey$Height
+sd(h)
+var(h)
+```
+
+```{r}
+#3
+hs=new_survey$Wr.Hnd
+quantile(hs)
+
+```
+```{r}
+#4
+cor(new_survey$`Wr.Hnd`, new_survey$Pulse)
+```
+```{r}
+#5
+x=levels(new_survey$Exer)
+for(i in x)
+{
+  m=mean(new_survey$Exer==i)
+  print(paste("For ", i , " the mean is:  ",m))
+}
+```
+```{r}
+#6
+nwh=new_survey$NW.Hnd
+n=max(nwh)
+i=min(nwh)
+#dividing height based on the range of values of NW.Hnd (12.5-15.5,15.5-18.5,18.5-21.5,21.5-23.5)
+d1=new_survey[new_survey$`NW.Hnd` >=i & new_survey$`NW.Hnd` < (i+3),c("Height")]
+d1
+i=i+3
+d2=new_survey[new_survey$`NW.Hnd` >=i & new_survey$`NW.Hnd` < (i+3),c("Height")]
+d2
+i=i+3
+d3=new_survey[new_survey$`NW.Hnd` >=i & new_survey$`NW.Hnd` < (i+3),c("Height")]
+d3
+i=i+3
+d4=new_survey[new_survey$`NW.Hnd` >=i & new_survey$`NW.Hnd` < (i+3),c("Height")]
+d4
+print("standard deviation")
+sd(d1)
+sd(d2)
+sd(d3)
+sd(d4)
+```
+```{r}
+#7
+summary(new_survey$Pulse)
+```
+

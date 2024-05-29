@@ -1,0 +1,64 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+
+```{r}
+
+#Question 3
+#Part1
+x <- seq(1:23)
+median(x)
+
+meann = 180
+x =c (40,NA,70,30)
+sum = sum(x,na.rm=TRUE)
+l = length(x)
+misssing_value = (meann*l)-sum
+misssing_value
+
+#Part 2
+mwidth_ipad = 5.1
+n_ipad = 12
+mwidth_kin = 4.8
+n_kin = 8
+print(paste("Total width of ipad ",mwidth_ipad*n_ipad))
+
+print(paste("Total width of kindle ",mwidth_kin*n_kin))
+
+mw = (mwidth_ipad*n_ipad+mwidth_kin*n_kin)/(n_ipad+n_kin)
+print(paste("Mean width of 12 ipad and 8 kindles ",mw))
+
+#Part 3
+getmode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+x <- c(8,5,8,5,7,6,7,7,5,7,5,5,6,6,9,8,9,7,9,9,6,8,6,6,7)
+mean(x)
+
+res <- getmode(x)
+res
+
+s <- sd(x)
+s
+
+if(s>1){
+  v <- var(x)
+  v
+} else {
+  print("SD not greater than 1")
+}
+
+#Part 4
+meann = 167.2
+x =c (158.4,162.8,165,178.2,NA)
+sum = sum(x,na.rm=TRUE)
+l = length(x)
+missing_value = (meann*l)-sum
+missing_value
+```
+
+

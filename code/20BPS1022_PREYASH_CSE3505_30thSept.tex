@@ -1,0 +1,2087 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{20BPS1022 Data Cleaning, Imputation and Statistics R code}
+\author{}
+\date{\vspace{-2.5em}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={20BPS1022 Data Cleaning, Imputation and Statistics R code},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{\textless{}{-}} \DecValTok{33} 
+\NormalTok{b }\OtherTok{\textless{}{-}} \DecValTok{200}
+\ControlFlowTok{if}\NormalTok{ (b }\SpecialCharTok{\textgreater{}}\NormalTok{ a) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"b is greater than a"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "b is greater than a"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{\textless{}{-}} \DecValTok{33} 
+\NormalTok{b }\OtherTok{\textless{}{-}} \DecValTok{33}
+\ControlFlowTok{if}\NormalTok{ (b }\SpecialCharTok{\textgreater{}}\NormalTok{ a) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"b is greater than a"}\NormalTok{)}
+\NormalTok{\}}\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(a }\SpecialCharTok{==}\NormalTok{ b)\{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"a and b are equal"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "a and b are equal"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{\textless{}{-}} \DecValTok{200}
+\NormalTok{b }\OtherTok{\textless{}{-}} \DecValTok{33}
+\ControlFlowTok{if}\NormalTok{ (b }\SpecialCharTok{\textgreater{}}\NormalTok{ a) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"b is greater than a"}\NormalTok{)}
+\NormalTok{\}}\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(a }\SpecialCharTok{==}\NormalTok{ b)\{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"a and b are equal"}\NormalTok{)}
+\NormalTok{\}}\ControlFlowTok{else}\NormalTok{\{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"a is greater than b"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "a is greater than b"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \DecValTok{41}
+\ControlFlowTok{if}\NormalTok{ (x }\SpecialCharTok{\textgreater{}} \DecValTok{10}\NormalTok{) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"Above ten"}\NormalTok{) }
+  \ControlFlowTok{if}\NormalTok{ (x }\SpecialCharTok{\textgreater{}} \DecValTok{20}\NormalTok{) \{}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"and also above 20!"}\NormalTok{) }
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"but not above 20."}\NormalTok{)}
+\NormalTok{  \} }
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"below 10."}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Above ten"
+## [1] "and also above 20!"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{\textless{}{-}} \DecValTok{200} 
+\NormalTok{b }\OtherTok{\textless{}{-}} \DecValTok{33} 
+\NormalTok{c }\OtherTok{\textless{}{-}} \DecValTok{500}
+\ControlFlowTok{if}\NormalTok{ (a }\SpecialCharTok{\textgreater{}}\NormalTok{ b }\SpecialCharTok{\&}\NormalTok{ c }\SpecialCharTok{\textgreater{}}\NormalTok{ a) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"Both conditions are true"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Both conditions are true"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{\textless{}{-}} \DecValTok{200} 
+\NormalTok{b }\OtherTok{\textless{}{-}} \DecValTok{33} 
+\NormalTok{c }\OtherTok{\textless{}{-}} \DecValTok{500}
+\ControlFlowTok{if}\NormalTok{ (a }\SpecialCharTok{\textgreater{}}\NormalTok{ b }\SpecialCharTok{|}\NormalTok{ a }\SpecialCharTok{\textgreater{}}\NormalTok{ c) \{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"At least one of the conditions are true"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "At least one of the conditions are true"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{i}\OtherTok{\textless{}{-}} \DecValTok{1}
+\ControlFlowTok{while}\NormalTok{(i}\SpecialCharTok{\textless{}}\DecValTok{6}\NormalTok{)\{}
+  \FunctionTok{print}\NormalTok{(i)}
+\NormalTok{  i }\OtherTok{\textless{}{-}}\NormalTok{ i}\SpecialCharTok{+}\DecValTok{1}
+  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\DecValTok{4}\NormalTok{)\{}
+    \ControlFlowTok{break}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+## [1] 2
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{i}\OtherTok{\textless{}{-}} \DecValTok{1}
+\ControlFlowTok{while}\NormalTok{(i}\SpecialCharTok{\textless{}}\DecValTok{6}\NormalTok{)\{}
+\NormalTok{  i }\OtherTok{\textless{}{-}}\NormalTok{ i}\SpecialCharTok{+}\DecValTok{1}
+  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)\{}
+    \ControlFlowTok{next}
+\NormalTok{  \}}
+  \FunctionTok{print}\NormalTok{(i)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+## [1] 4
+## [1] 5
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dice }\OtherTok{\textless{}{-}} \DecValTok{1} 
+\ControlFlowTok{while}\NormalTok{ (dice }\SpecialCharTok{\textless{}=} \DecValTok{6}\NormalTok{) }
+\NormalTok{  \{ }\ControlFlowTok{if}\NormalTok{ (dice }\SpecialCharTok{\textless{}} \DecValTok{6}\NormalTok{) \{}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"No"}\NormalTok{) }
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"Yes!"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{dice }\OtherTok{\textless{}{-}}\NormalTok{ dice }\SpecialCharTok{+} \DecValTok{1}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "No"
+## [1] "No"
+## [1] "No"
+## [1] "No"
+## [1] "No"
+## [1] "Yes!"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{)\{}
+  \FunctionTok{print}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fruits }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"banana"}\NormalTok{,}\StringTok{"apple"}\NormalTok{,}\StringTok{"cherry"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ fruits)\{}
+  \FunctionTok{print}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "banana"
+## [1] "apple"
+## [1] "cherry"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dice }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ dice)\{}
+  \FunctionTok{print}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fruits }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"banana"}\NormalTok{,}\StringTok{"apple"}\NormalTok{,}\StringTok{"cherry"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ fruits)\{}
+  \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"cherry"}\NormalTok{)\{}
+    \ControlFlowTok{break}
+\NormalTok{  \}}
+  \FunctionTok{print}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "banana"
+## [1] "apple"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fruits }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"banana"}\NormalTok{,}\StringTok{"apple"}\NormalTok{,}\StringTok{"cherry"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ fruits)\{}
+  \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"apple"}\NormalTok{)\{}
+    \ControlFlowTok{next}
+\NormalTok{  \}}
+  \FunctionTok{print}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "banana"
+## [1] "cherry"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dice }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{6}
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in}\NormalTok{ dice) \{ }
+  \ControlFlowTok{if}\NormalTok{ (x }\SpecialCharTok{==} \DecValTok{6}\NormalTok{) \{}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The dice number is"}\NormalTok{, x, }\StringTok{"Yes"}\NormalTok{)) }
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"The dice number is"}\NormalTok{, x, }\StringTok{"No"}\NormalTok{))}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The dice number is 1 No"
+## [1] "The dice number is 2 No"
+## [1] "The dice number is 3 No"
+## [1] "The dice number is 4 No"
+## [1] "The dice number is 5 No"
+## [1] "The dice number is 6 Yes"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{adj }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"big"}\NormalTok{, }\StringTok{"tasty"}\NormalTok{) }
+\NormalTok{fruits }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"apple"}\NormalTok{, }\StringTok{"banana"}\NormalTok{, }\StringTok{"cherry"}\NormalTok{) }
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in}\NormalTok{ adj) \{ }
+  \ControlFlowTok{for}\NormalTok{ (y }\ControlFlowTok{in}\NormalTok{ fruits) \{}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(x, y))}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "red apple"
+## [1] "red banana"
+## [1] "red cherry"
+## [1] "big apple"
+## [1] "big banana"
+## [1] "big cherry"
+## [1] "tasty apple"
+## [1] "tasty banana"
+## [1] "tasty cherry"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'dplyr' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x1=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\AttributeTok{x2=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{),}\AttributeTok{x3=}\FunctionTok{c}\NormalTok{(}\StringTok{"f"}\NormalTok{,}\StringTok{"d"}\NormalTok{,}\StringTok{"j"}\NormalTok{,}\StringTok{"e"}\NormalTok{,}\StringTok{"a"}\NormalTok{,}\StringTok{"d"}\NormalTok{))}
+\NormalTok{data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3
+## 1  1  1  f
+## 2  2  2  d
+## 3  3  2  j
+## 4  4  3  e
+## 5  5  1  a
+## 6  6  2  d
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{arrange}\NormalTok{(data,x3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3
+## 1  5  1  a
+## 2  2  2  d
+## 3  6  2  d
+## 4  4  3  e
+## 5  1  1  f
+## 6  3  2  j
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{filter}\NormalTok{(data,x2}\SpecialCharTok{==}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3
+## 1  2  2  d
+## 2  3  2  j
+## 3  6  2  d
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mutate}\NormalTok{(data,}\AttributeTok{x4=}\NormalTok{x1}\SpecialCharTok{+}\NormalTok{x2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3 x4
+## 1  1  1  f  2
+## 2  2  2  d  4
+## 3  3  2  j  5
+## 4  4  3  e  7
+## 5  5  1  a  6
+## 6  6  2  d  8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "D:/SEM5/LAB/CSE3505/LAB_30th_Sept"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"D:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{SEM5}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{CSE3505}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB\_30th\_Sept"}\NormalTok{)}
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "D:/SEM5/LAB/CSE3505/LAB_30th_Sept"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data1}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"D:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{SEM5}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{CSE3505}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB\_30th\_Sept}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Datasample.txt"}\NormalTok{,}\AttributeTok{header=}\ConstantTok{FALSE}\NormalTok{,}\AttributeTok{sep=}\StringTok{" "}\NormalTok{)}
+\NormalTok{data1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    V1 V2 V3
+## 1 100  A  a
+## 2 200  B  b
+## 3 300  C  c
+## 4 400  D  d
+## 5 500  E  e
+## 6 600  F  f
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data2}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"D:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{SEM5}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{CSE3505}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB\_30th\_Sept}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{events.csv"}\NormalTok{)}
+\NormalTok{data2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   student_id student_name event1 event2 event3 event4 sum
+## 1          1        disha     10   10.0     10    9.0  39
+## 2          2        Stuti      8    9.0      9   10.0  36
+## 3          3     priyanka      9    7.0      9    4.0  29
+## 4          4       ayushi      6    8.0      8    7.0  29
+## 5          5      pragati      7    8.0      9    8.0  32
+## 6          0            0      8    8.4      9    7.6   0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+\NormalTok{y}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+\NormalTok{z}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{18}\NormalTok{)}
+\NormalTok{data3}\OtherTok{=}\FunctionTok{cbind}\NormalTok{(x,y,z)}
+\NormalTok{data3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       x  y  z
+## [1,]  1  2 10
+## [2,]  3  4 12
+## [3,]  4  6 14
+## [4,]  5  8 16
+## [5,] 10 10 18
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.csv}\NormalTok{(data3,}\AttributeTok{file=}\StringTok{"D:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{SEM5}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{CSE3505}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB\_30th\_Sept}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{practice.csv"}\NormalTok{,}\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{df}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\StringTok{"name"}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{,}\StringTok{"b"}\NormalTok{,}\StringTok{"c"}\NormalTok{),}\StringTok{"language"}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\StringTok{"r"}\NormalTok{,}\StringTok{"p"}\NormalTok{,}\StringTok{"j"}\NormalTok{),}\AttributeTok{age=}\FunctionTok{c}\NormalTok{(}\DecValTok{22}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{28}\NormalTok{))}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   name language age
+## 1    a        r  22
+## 2    b        p  25
+## 3    c        j  28
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.table}\NormalTok{(df,}\AttributeTok{file=}\StringTok{"D:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{SEM5}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{CSE3505}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{LAB\_30th\_Sept}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{p\_text.txt"}\NormalTok{,}\AttributeTok{sep=}\StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{,}\AttributeTok{row.names=}\ConstantTok{TRUE}\NormalTok{,}\AttributeTok{col.names=}\ConstantTok{NA}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(mtcars)}
+\NormalTok{cars}\OtherTok{=}\NormalTok{mtcars}
+\NormalTok{mtcars}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 mpg cyl  disp  hp drat    wt qsec vs am gear carb
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.7  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.9  1  1    5    2
+## Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.5  0  1    5    4
+## Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.5  0  1    5    6
+## Maserati Bora  15.0   8 301.0 335 3.54 3.570 14.6  0  1    5    8
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.6  1  1    4    2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
+## [11] "carb"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rownames}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Mazda RX4"           "Mazda RX4 Wag"       "Datsun 710"         
+##  [4] "Hornet 4 Drive"      "Hornet Sportabout"   "Valiant"            
+##  [7] "Duster 360"          "Merc 240D"           "Merc 230"           
+## [10] "Merc 280"            "Merc 280C"           "Merc 450SE"         
+## [13] "Merc 450SL"          "Merc 450SLC"         "Cadillac Fleetwood" 
+## [16] "Lincoln Continental" "Chrysler Imperial"   "Fiat 128"           
+## [19] "Honda Civic"         "Toyota Corolla"      "Toyota Corona"      
+## [22] "Dodge Challenger"    "AMC Javelin"         "Camaro Z28"         
+## [25] "Pontiac Firebird"    "Fiat X1-9"           "Porsche 914-2"      
+## [28] "Lotus Europa"        "Ford Pantera L"      "Ferrari Dino"       
+## [31] "Maserati Bora"       "Volvo 142E"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(mtcars)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 32 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sub1}\OtherTok{=}\FunctionTok{cbind}\NormalTok{(mtcars}\SpecialCharTok{$}\NormalTok{mpg,mtcars}\SpecialCharTok{$}\NormalTok{cyl)}
+\NormalTok{sub2}\OtherTok{=}\NormalTok{mtcars[}\DecValTok{4}\SpecialCharTok{:}\DecValTok{8}\NormalTok{]}
+\NormalTok{sub2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      hp drat    wt  qsec vs
+## Mazda RX4           110 3.90 2.620 16.46  0
+## Mazda RX4 Wag       110 3.90 2.875 17.02  0
+## Datsun 710           93 3.85 2.320 18.61  1
+## Hornet 4 Drive      110 3.08 3.215 19.44  1
+## Hornet Sportabout   175 3.15 3.440 17.02  0
+## Valiant             105 2.76 3.460 20.22  1
+## Duster 360          245 3.21 3.570 15.84  0
+## Merc 240D            62 3.69 3.190 20.00  1
+## Merc 230             95 3.92 3.150 22.90  1
+## Merc 280            123 3.92 3.440 18.30  1
+## Merc 280C           123 3.92 3.440 18.90  1
+## Merc 450SE          180 3.07 4.070 17.40  0
+## Merc 450SL          180 3.07 3.730 17.60  0
+## Merc 450SLC         180 3.07 3.780 18.00  0
+## Cadillac Fleetwood  205 2.93 5.250 17.98  0
+## Lincoln Continental 215 3.00 5.424 17.82  0
+## Chrysler Imperial   230 3.23 5.345 17.42  0
+## Fiat 128             66 4.08 2.200 19.47  1
+## Honda Civic          52 4.93 1.615 18.52  1
+## Toyota Corolla       65 4.22 1.835 19.90  1
+## Toyota Corona        97 3.70 2.465 20.01  1
+## Dodge Challenger    150 2.76 3.520 16.87  0
+## AMC Javelin         150 3.15 3.435 17.30  0
+## Camaro Z28          245 3.73 3.840 15.41  0
+## Pontiac Firebird    175 3.08 3.845 17.05  0
+## Fiat X1-9            66 4.08 1.935 18.90  1
+## Porsche 914-2        91 4.43 2.140 16.70  0
+## Lotus Europa        113 3.77 1.513 16.90  1
+## Ford Pantera L      264 4.22 3.170 14.50  0
+## Ferrari Dino        175 3.62 2.770 15.50  0
+## Maserati Bora       335 3.54 3.570 14.60  0
+## Volvo 142E          109 4.11 2.780 18.60  1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sub3}\OtherTok{=}\NormalTok{mtcars[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{8}\NormalTok{)]}
+\NormalTok{sub3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     cyl    wt vs
+## Mazda RX4             6 2.620  0
+## Mazda RX4 Wag         6 2.875  0
+## Datsun 710            4 2.320  1
+## Hornet 4 Drive        6 3.215  1
+## Hornet Sportabout     8 3.440  0
+## Valiant               6 3.460  1
+## Duster 360            8 3.570  0
+## Merc 240D             4 3.190  1
+## Merc 230              4 3.150  1
+## Merc 280              6 3.440  1
+## Merc 280C             6 3.440  1
+## Merc 450SE            8 4.070  0
+## Merc 450SL            8 3.730  0
+## Merc 450SLC           8 3.780  0
+## Cadillac Fleetwood    8 5.250  0
+## Lincoln Continental   8 5.424  0
+## Chrysler Imperial     8 5.345  0
+## Fiat 128              4 2.200  1
+## Honda Civic           4 1.615  1
+## Toyota Corolla        4 1.835  1
+## Toyota Corona         4 2.465  1
+## Dodge Challenger      8 3.520  0
+## AMC Javelin           8 3.435  0
+## Camaro Z28            8 3.840  0
+## Pontiac Firebird      8 3.845  0
+## Fiat X1-9             4 1.935  1
+## Porsche 914-2         4 2.140  0
+## Lotus Europa          4 1.513  1
+## Ford Pantera L        8 3.170  0
+## Ferrari Dino          6 2.770  0
+## Maserati Bora         8 3.570  0
+## Volvo 142E            4 2.780  1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sub4}\OtherTok{=}\NormalTok{mtcars[}\FunctionTok{c}\NormalTok{(}\StringTok{"mpg"}\NormalTok{,}\StringTok{"cyl"}\NormalTok{)]}
+\NormalTok{sub4}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      mpg cyl
+## Mazda RX4           21.0   6
+## Mazda RX4 Wag       21.0   6
+## Datsun 710          22.8   4
+## Hornet 4 Drive      21.4   6
+## Hornet Sportabout   18.7   8
+## Valiant             18.1   6
+## Duster 360          14.3   8
+## Merc 240D           24.4   4
+## Merc 230            22.8   4
+## Merc 280            19.2   6
+## Merc 280C           17.8   6
+## Merc 450SE          16.4   8
+## Merc 450SL          17.3   8
+## Merc 450SLC         15.2   8
+## Cadillac Fleetwood  10.4   8
+## Lincoln Continental 10.4   8
+## Chrysler Imperial   14.7   8
+## Fiat 128            32.4   4
+## Honda Civic         30.4   4
+## Toyota Corolla      33.9   4
+## Toyota Corona       21.5   4
+## Dodge Challenger    15.5   8
+## AMC Javelin         15.2   8
+## Camaro Z28          13.3   8
+## Pontiac Firebird    19.2   8
+## Fiat X1-9           27.3   4
+## Porsche 914-2       26.0   4
+## Lotus Europa        30.4   4
+## Ford Pantera L      15.8   8
+## Ferrari Dino        19.7   6
+## Maserati Bora       15.0   8
+## Volvo 142E          21.4   4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sub5}\OtherTok{=}\FunctionTok{subset}\NormalTok{(mtcars,mpg}\SpecialCharTok{\textgreater{}}\DecValTok{18}\NormalTok{)}
+\NormalTok{sub5}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Fiat 128          32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic       30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla    33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona     21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Pontiac Firebird  19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+## Fiat X1-9         27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2     26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa      30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Ferrari Dino      19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+## Volvo 142E        21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#table() Function}
+\NormalTok{df}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\StringTok{"Name"}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\StringTok{"abc"}\NormalTok{,}\StringTok{"cde"}\NormalTok{,}\StringTok{"def"}\NormalTok{),}\StringTok{"Gender"}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\StringTok{"Male"}\NormalTok{,}\StringTok{"Female"}\NormalTok{,}\StringTok{"Male"}\NormalTok{))}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Name Gender
+## 1  abc   Male
+## 2  cde Female
+## 3  def   Male
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Gender
+## Name  Female Male
+##   abc      0    1
+##   cde      1    0
+##   def      0    1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\FunctionTok{is.na}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE FALSE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.nan}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\ConstantTok{NaN}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{4}\NormalTok{)}
+\FunctionTok{is.na}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.nan}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE FALSE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#removing missing values}
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{4}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\NormalTok{bad}\OtherTok{=}\FunctionTok{is.na}\NormalTok{(x)}
+\NormalTok{x[}\SpecialCharTok{!}\NormalTok{bad]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 4 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  1  2 NA  4 NA  5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x1=}\FunctionTok{c}\NormalTok{(}\DecValTok{7}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{9}\NormalTok{),}\AttributeTok{x2=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{9}\NormalTok{,}\ConstantTok{NA}\NormalTok{),}\AttributeTok{x3=}\FunctionTok{c}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{8}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\NormalTok{data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3
+## 1  7  1 NA
+## 2  2  3  8
+## 3  1  1  8
+## 4 NA  9 NA
+## 5  9 NA  5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{complete.cases}\NormalTok{(data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE  TRUE  TRUE FALSE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_complete}\OtherTok{=}\NormalTok{data[}\FunctionTok{complete.cases}\NormalTok{(data),]}
+\NormalTok{data\_complete}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   x1 x2 x3
+## 2  2  3  8
+## 3  1  1  8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{4}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\NormalTok{y}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{,}\StringTok{"b"}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\StringTok{"d"}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\StringTok{"f"}\NormalTok{)}
+\NormalTok{good}\OtherTok{=}\FunctionTok{complete.cases}\NormalTok{(x,y)}
+\NormalTok{good}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[good]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 4 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y[good]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "a" "b" "d" "f"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#airquality dataset}
+\NormalTok{airquality[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(airquality)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Ozone           Solar.R           Wind             Temp      
+##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+##  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+##  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+##  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+##  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+##  NA's   :37       NA's   :7                                       
+##      Month            Day      
+##  Min.   :5.000   Min.   : 1.0  
+##  1st Qu.:6.000   1st Qu.: 8.0  
+##  Median :7.000   Median :16.0  
+##  Mean   :6.993   Mean   :15.8  
+##  3rd Qu.:8.000   3rd Qu.:23.0  
+##  Max.   :9.000   Max.   :31.0  
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(airquality}\SpecialCharTok{$}\NormalTok{Ozone,}\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 42.12931
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{good}\OtherTok{=}\FunctionTok{complete.cases}\NormalTok{(airquality)}
+\NormalTok{airquality[good,][}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 7    23     299  8.6   65     5   7
+## 8    19      99 13.8   59     5   8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#na.omit}
+\NormalTok{x}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{24}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{6}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{9}\NormalTok{)}
+\NormalTok{x}\OtherTok{=}\FunctionTok{na.omit}\NormalTok{(x)}
+\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  1 24  6  9
+## attr(,"na.action")
+## [1] 3 5
+## attr(,"class")
+## [1] "omit"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#data imputation}
+\NormalTok{data}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{marks1=}\FunctionTok{c}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{22}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{49}\NormalTok{,}\DecValTok{75}\NormalTok{),}\AttributeTok{marks2=}\FunctionTok{c}\NormalTok{(}\DecValTok{81}\NormalTok{,}\DecValTok{14}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{61}\NormalTok{,}\DecValTok{12}\NormalTok{),}\AttributeTok{marks3=}\FunctionTok{c}\NormalTok{(}\FloatTok{78.5}\NormalTok{,}\FloatTok{19.325}\NormalTok{,}\ConstantTok{NA}\NormalTok{,}\DecValTok{28}\NormalTok{,}\FloatTok{48.002}\NormalTok{))}
+\NormalTok{data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   marks1 marks2 marks3
+## 1     NA     81 78.500
+## 2     22     14 19.325
+## 3     NA     NA     NA
+## 4     49     61 28.000
+## 5     75     12 48.002
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#impute manually(method 1)}
+\NormalTok{data}\SpecialCharTok{$}\NormalTok{marks1[}\FunctionTok{is.na}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{marks1)]}\OtherTok{=}\FunctionTok{mean}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{marks1,}\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     marks1 marks2 marks3
+## 1 48.66667     81 78.500
+## 2 22.00000     14 19.325
+## 3 48.66667     NA     NA
+## 4 49.00000     61 28.000
+## 5 75.00000     12 48.002
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(Hmisc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'Hmisc' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: survival
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Formula
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'ggplot2' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Hmisc'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     src, summarize
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     format.pval, units
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#using Hmisc}
+\FunctionTok{impute}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{marks2,median)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     1     2     3     4     5 
+##  81.0  14.0 37.5*  61.0  12.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#impute with a specific constant value}
+\FunctionTok{impute}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{marks3,}\DecValTok{2000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1         2         3         4         5 
+##    78.500    19.325 2000.000*    28.000    48.002
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#impute the entire dataset}
+\NormalTok{all\_column\_median}\OtherTok{=}\FunctionTok{apply}\NormalTok{(data,}\DecValTok{2}\NormalTok{,median,}\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\#imputing median value with NA}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{colnames}\NormalTok{(data))}
+\NormalTok{  data[,i][}\FunctionTok{is.na}\NormalTok{(data[,i])]}\OtherTok{=}\NormalTok{all\_column\_median[i]}
+\NormalTok{data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     marks1 marks2 marks3
+## 1 48.66667   81.0 78.500
+## 2 22.00000   14.0 19.325
+## 3 48.66667   37.5 38.001
+## 4 49.00000   61.0 28.000
+## 5 75.00000   12.0 48.002
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Module 4}
+\FunctionTok{library}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'MASS' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'MASS'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{painters}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Composition Drawing Colour Expression School
+## Da Udine                 10       8     16          3      A
+## Da Vinci                 15      16      4         14      A
+## Del Piombo                8      13     16          7      A
+## Del Sarto                12      16      9          8      A
+## Fr. Penni                 0      15      8          0      A
+## Guilio Romano            15      16      4         14      A
+## Michelangelo              8      17      4          8      A
+## Perino del Vaga          15      16      7          6      A
+## Perugino                  4      12     10          4      A
+## Raphael                  17      18     12         18      A
+## F. Zucarro               10      13      8          8      B
+## Fr. Salviata             13      15      8          8      B
+## Parmigiano               10      15      6          6      B
+## Primaticcio              15      14      7         10      B
+## T. Zucarro               13      14     10          9      B
+## Volterra                 12      15      5          8      B
+## Barocci                  14      15      6         10      C
+## Cortona                  16      14     12          6      C
+## Josepin                  10      10      6          2      C
+## L. Jordaens              13      12      9          6      C
+## Testa                    11      15      0          6      C
+## Vanius                   15      15     12         13      C
+## Bassano                   6       8     17          0      D
+## Bellini                   4       6     14          0      D
+## Giorgione                 8       9     18          4      D
+## Murillo                   6       8     15          4      D
+## Palma Giovane            12       9     14          6      D
+## Palma Vecchio             5       6     16          0      D
+## Pordenone                 8      14     17          5      D
+## Tintoretto               15      14     16          4      D
+## Titian                   12      15     18          6      D
+## Veronese                 15      10     16          3      D
+## Albani                   14      14     10          6      E
+## Caravaggio                6       6     16          0      E
+## Corregio                 13      13     15         12      E
+## Domenichino              15      17      9         17      E
+## Guercino                 18      10     10          4      E
+## Lanfranco                14      13     10          5      E
+## The Carraci              15      17     13         13      E
+## Durer                     8      10     10          8      F
+## Holbein                   9      10     16         13      F
+## Pourbus                   4      15      6          6      F
+## Van Leyden                8       6      6          4      F
+## Diepenbeck               11      10     14          6      G
+## J. Jordaens              10       8     16          6      G
+## Otho Venius              13      14     10         10      G
+## Rembrandt                15       6     17         12      G
+## Rubens                   18      13     17         17      G
+## Teniers                  15      12     13          6      G
+## Van Dyck                 15      10     17         13      G
+## Bourdon                  10       8      8          4      H
+## Le Brun                  16      16      8         16      H
+## Le Suer                  15      15      4         15      H
+## Poussin                  15      17      6         15      H
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{painters}\SpecialCharTok{$}\NormalTok{School}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] A A A A A A A A A A B B B B B B C C C C C C D D D D D D D D D D E E E E E E
+## [39] E F F F F G G G G G G G H H H H
+## Levels: A B C D E F G H
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{help}\NormalTok{(painters)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## starting httpd help server ... done
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(painters)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Composition       Drawing          Colour        Expression         School  
+##  Min.   : 0.00   Min.   : 6.00   Min.   : 0.00   Min.   : 0.000   A      :10  
+##  1st Qu.: 8.25   1st Qu.:10.00   1st Qu.: 7.25   1st Qu.: 4.000   D      :10  
+##  Median :12.50   Median :13.50   Median :10.00   Median : 6.000   E      : 7  
+##  Mean   :11.56   Mean   :12.46   Mean   :10.94   Mean   : 7.667   G      : 7  
+##  3rd Qu.:15.00   3rd Qu.:15.00   3rd Qu.:16.00   3rd Qu.:11.500   B      : 6  
+##  Max.   :18.00   Max.   :18.00   Max.   :18.00   Max.   :18.000   C      : 6  
+##                                                                   (Other): 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#frequency distribution of qualitative data}
+\NormalTok{school}\OtherTok{=}\NormalTok{painters}\SpecialCharTok{$}\NormalTok{School}
+\NormalTok{school.freq}\OtherTok{=}\FunctionTok{table}\NormalTok{(school)}
+\NormalTok{school.freq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## school
+##  A  B  C  D  E  F  G  H 
+## 10  6  6 10  7  4  7  4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cbind}\NormalTok{(school.freq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   school.freq
+## A          10
+## B           6
+## C           6
+## D          10
+## E           7
+## F           4
+## G           7
+## H           4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#relative frequency distribution of the painter schools}
+\NormalTok{school.relfreq}\OtherTok{=}\NormalTok{school.freq}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(painters)}
+\NormalTok{school.relfreq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## school
+##          A          B          C          D          E          F          G 
+## 0.18518519 0.11111111 0.11111111 0.18518519 0.12962963 0.07407407 0.12962963 
+##          H 
+## 0.07407407
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#enhanced}
+\NormalTok{old}\OtherTok{=}\FunctionTok{options}\NormalTok{(}\AttributeTok{digits=}\DecValTok{1}\NormalTok{)}
+\NormalTok{school.relfreq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## school
+##    A    B    C    D    E    F    G    H 
+## 0.19 0.11 0.11 0.19 0.13 0.07 0.13 0.07
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{options}\NormalTok{(old)}
+\FunctionTok{cbind}\NormalTok{(school.relfreq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   school.relfreq
+## A     0.18518519
+## B     0.11111111
+## C     0.11111111
+## D     0.18518519
+## E     0.12962963
+## F     0.07407407
+## G     0.12962963
+## H     0.07407407
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{options}\NormalTok{(old)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#quantitative data}
+\NormalTok{faithful}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     eruptions waiting
+## 1       3.600      79
+## 2       1.800      54
+## 3       3.333      74
+## 4       2.283      62
+## 5       4.533      85
+## 6       2.883      55
+## 7       4.700      88
+## 8       3.600      85
+## 9       1.950      51
+## 10      4.350      85
+## 11      1.833      54
+## 12      3.917      84
+## 13      4.200      78
+## 14      1.750      47
+## 15      4.700      83
+## 16      2.167      52
+## 17      1.750      62
+## 18      4.800      84
+## 19      1.600      52
+## 20      4.250      79
+## 21      1.800      51
+## 22      1.750      47
+## 23      3.450      78
+## 24      3.067      69
+## 25      4.533      74
+## 26      3.600      83
+## 27      1.967      55
+## 28      4.083      76
+## 29      3.850      78
+## 30      4.433      79
+## 31      4.300      73
+## 32      4.467      77
+## 33      3.367      66
+## 34      4.033      80
+## 35      3.833      74
+## 36      2.017      52
+## 37      1.867      48
+## 38      4.833      80
+## 39      1.833      59
+## 40      4.783      90
+## 41      4.350      80
+## 42      1.883      58
+## 43      4.567      84
+## 44      1.750      58
+## 45      4.533      73
+## 46      3.317      83
+## 47      3.833      64
+## 48      2.100      53
+## 49      4.633      82
+## 50      2.000      59
+## 51      4.800      75
+## 52      4.716      90
+## 53      1.833      54
+## 54      4.833      80
+## 55      1.733      54
+## 56      4.883      83
+## 57      3.717      71
+## 58      1.667      64
+## 59      4.567      77
+## 60      4.317      81
+## 61      2.233      59
+## 62      4.500      84
+## 63      1.750      48
+## 64      4.800      82
+## 65      1.817      60
+## 66      4.400      92
+## 67      4.167      78
+## 68      4.700      78
+## 69      2.067      65
+## 70      4.700      73
+## 71      4.033      82
+## 72      1.967      56
+## 73      4.500      79
+## 74      4.000      71
+## 75      1.983      62
+## 76      5.067      76
+## 77      2.017      60
+## 78      4.567      78
+## 79      3.883      76
+## 80      3.600      83
+## 81      4.133      75
+## 82      4.333      82
+## 83      4.100      70
+## 84      2.633      65
+## 85      4.067      73
+## 86      4.933      88
+## 87      3.950      76
+## 88      4.517      80
+## 89      2.167      48
+## 90      4.000      86
+## 91      2.200      60
+## 92      4.333      90
+## 93      1.867      50
+## 94      4.817      78
+## 95      1.833      63
+## 96      4.300      72
+## 97      4.667      84
+## 98      3.750      75
+## 99      1.867      51
+## 100     4.900      82
+## 101     2.483      62
+## 102     4.367      88
+## 103     2.100      49
+## 104     4.500      83
+## 105     4.050      81
+## 106     1.867      47
+## 107     4.700      84
+## 108     1.783      52
+## 109     4.850      86
+## 110     3.683      81
+## 111     4.733      75
+## 112     2.300      59
+## 113     4.900      89
+## 114     4.417      79
+## 115     1.700      59
+## 116     4.633      81
+## 117     2.317      50
+## 118     4.600      85
+## 119     1.817      59
+## 120     4.417      87
+## 121     2.617      53
+## 122     4.067      69
+## 123     4.250      77
+## 124     1.967      56
+## 125     4.600      88
+## 126     3.767      81
+## 127     1.917      45
+## 128     4.500      82
+## 129     2.267      55
+## 130     4.650      90
+## 131     1.867      45
+## 132     4.167      83
+## 133     2.800      56
+## 134     4.333      89
+## 135     1.833      46
+## 136     4.383      82
+## 137     1.883      51
+## 138     4.933      86
+## 139     2.033      53
+## 140     3.733      79
+## 141     4.233      81
+## 142     2.233      60
+## 143     4.533      82
+## 144     4.817      77
+## 145     4.333      76
+## 146     1.983      59
+## 147     4.633      80
+## 148     2.017      49
+## 149     5.100      96
+## 150     1.800      53
+## 151     5.033      77
+## 152     4.000      77
+## 153     2.400      65
+## 154     4.600      81
+## 155     3.567      71
+## 156     4.000      70
+## 157     4.500      81
+## 158     4.083      93
+## 159     1.800      53
+## 160     3.967      89
+## 161     2.200      45
+## 162     4.150      86
+## 163     2.000      58
+## 164     3.833      78
+## 165     3.500      66
+## 166     4.583      76
+## 167     2.367      63
+## 168     5.000      88
+## 169     1.933      52
+## 170     4.617      93
+## 171     1.917      49
+## 172     2.083      57
+## 173     4.583      77
+## 174     3.333      68
+## 175     4.167      81
+## 176     4.333      81
+## 177     4.500      73
+## 178     2.417      50
+## 179     4.000      85
+## 180     4.167      74
+## 181     1.883      55
+## 182     4.583      77
+## 183     4.250      83
+## 184     3.767      83
+## 185     2.033      51
+## 186     4.433      78
+## 187     4.083      84
+## 188     1.833      46
+## 189     4.417      83
+## 190     2.183      55
+## 191     4.800      81
+## 192     1.833      57
+## 193     4.800      76
+## 194     4.100      84
+## 195     3.966      77
+## 196     4.233      81
+## 197     3.500      87
+## 198     4.366      77
+## 199     2.250      51
+## 200     4.667      78
+## 201     2.100      60
+## 202     4.350      82
+## 203     4.133      91
+## 204     1.867      53
+## 205     4.600      78
+## 206     1.783      46
+## 207     4.367      77
+## 208     3.850      84
+## 209     1.933      49
+## 210     4.500      83
+## 211     2.383      71
+## 212     4.700      80
+## 213     1.867      49
+## 214     3.833      75
+## 215     3.417      64
+## 216     4.233      76
+## 217     2.400      53
+## 218     4.800      94
+## 219     2.000      55
+## 220     4.150      76
+## 221     1.867      50
+## 222     4.267      82
+## 223     1.750      54
+## 224     4.483      75
+## 225     4.000      78
+## 226     4.117      79
+## 227     4.083      78
+## 228     4.267      78
+## 229     3.917      70
+## 230     4.550      79
+## 231     4.083      70
+## 232     2.417      54
+## 233     4.183      86
+## 234     2.217      50
+## 235     4.450      90
+## 236     1.883      54
+## 237     1.850      54
+## 238     4.283      77
+## 239     3.950      79
+## 240     2.333      64
+## 241     4.150      75
+## 242     2.350      47
+## 243     4.933      86
+## 244     2.900      63
+## 245     4.583      85
+## 246     3.833      82
+## 247     2.083      57
+## 248     4.367      82
+## 249     2.133      67
+## 250     4.350      74
+## 251     2.200      54
+## 252     4.450      83
+## 253     3.567      73
+## 254     4.500      73
+## 255     4.150      88
+## 256     3.817      80
+## 257     3.917      71
+## 258     4.450      83
+## 259     2.000      56
+## 260     4.283      79
+## 261     4.767      78
+## 262     4.533      84
+## 263     1.850      58
+## 264     4.250      83
+## 265     1.983      43
+## 266     2.250      60
+## 267     4.750      75
+## 268     4.117      81
+## 269     2.150      46
+## 270     4.417      90
+## 271     1.817      46
+## 272     4.467      74
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(faithful)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   eruptions waiting
+## 1     3.600      79
+## 2     1.800      54
+## 3     3.333      74
+## 4     2.283      62
+## 5     4.533      85
+## 6     2.883      55
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#range of eruption duration}
+\NormalTok{duration}\OtherTok{=}\NormalTok{faithful}\SpecialCharTok{$}\NormalTok{eruptions}
+\FunctionTok{range}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.6 5.1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#break the range into non{-}overlapping sub{-}intervals}
+\NormalTok{breaks}\OtherTok{=}\FunctionTok{seq}\NormalTok{(}\FloatTok{1.5}\NormalTok{,}\FloatTok{5.5}\NormalTok{, }\AttributeTok{by=}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{breaks}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#CUT METHOD}
+\NormalTok{duration.cut}\OtherTok{=}\FunctionTok{cut}\NormalTok{(duration,breaks,}\AttributeTok{right=}\ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\#frequency of eruptions in each sub{-}interval with table function}
+\NormalTok{duration.freq}\OtherTok{=}\FunctionTok{table}\NormalTok{(duration.cut)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#cumulative frequency}
+\NormalTok{duration.cumfreq}\OtherTok{=}\FunctionTok{cumsum}\NormalTok{(duration.freq)}
+\NormalTok{duration.cumfreq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1.5,2) [2,2.5) [2.5,3) [3,3.5) [3.5,4) [4,4.5) [4.5,5) [5,5.5) 
+##      51      92      97     104     134     207     268     272
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#mean}
+\FunctionTok{mean}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.487783
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#median}
+\FunctionTok{median}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#quartiles}
+\FunctionTok{quantile}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      0%     25%     50%     75%    100% 
+## 1.60000 2.16275 4.00000 4.45425 5.10000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#percentile}
+\FunctionTok{quantile}\NormalTok{(duration,}\FunctionTok{c}\NormalTok{(.}\DecValTok{32}\NormalTok{,.}\DecValTok{57}\NormalTok{,.}\DecValTok{98}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     32%     57%     98% 
+## 2.39524 4.13300 4.93300
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#range}
+\FunctionTok{max}\NormalTok{(duration)}\SpecialCharTok{{-}}\FunctionTok{min}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#interquartile range}
+\FunctionTok{IQR}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.2915
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#variance}
+\FunctionTok{var}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.302728
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#standard deviation}
+\FunctionTok{sd}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.141371
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(e1071)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'e1071' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'e1071'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:Hmisc':
+## 
+##     impute
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#central moment}
+\FunctionTok{moment}\NormalTok{(duration,}\AttributeTok{order=}\DecValTok{3}\NormalTok{,}\AttributeTok{center=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.6149059
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#skewness}
+\FunctionTok{skewness}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.4135498
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#kurtosis}
+\FunctionTok{kurtosis}\NormalTok{(duration)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -1.511605
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#visualisation}
+\NormalTok{dat}\OtherTok{=}\NormalTok{airquality}
+\FunctionTok{plot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone,dat}\SpecialCharTok{$}\NormalTok{Wind)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#bar plot}
+\FunctionTok{barplot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone,}\AttributeTok{main=}\StringTok{\textquotesingle{}Ozone levels\textquotesingle{}}\NormalTok{,}\AttributeTok{ylab=}\StringTok{\textquotesingle{}ozone value\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{barplot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone,}\AttributeTok{main=}\StringTok{\textquotesingle{}Ozone levels\textquotesingle{}}\NormalTok{,}\AttributeTok{xlab=}\StringTok{\textquotesingle{}ozone value\textquotesingle{}}\NormalTok{,}\AttributeTok{horiz=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#histogram}
+\FunctionTok{hist}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Solar.R)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#boxplot}
+\FunctionTok{boxplot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{boxplot}\NormalTok{(dat[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{],}\AttributeTok{main=}\StringTok{\textquotesingle{}multiple box plot\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-49-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#lattice graphs}
+\FunctionTok{library}\NormalTok{(lattice)}
+\FunctionTok{densityplot}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Ozone)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-50-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{splom}\NormalTok{(dat[}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-50-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggplot}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ mtcars,}
+\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{wt,}\AttributeTok{y=}\NormalTok{mpg))}\SpecialCharTok{+}\FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-51-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(iris,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Sepal.Length,}\AttributeTok{y=}\NormalTok{Petal.Length,}\AttributeTok{col=}\NormalTok{Species))}\SpecialCharTok{+}\FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color=}\StringTok{"blue"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{color=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-52-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(mtcars,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{gear))}\SpecialCharTok{+}\FunctionTok{geom\_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-53-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#histogram}
+\FunctionTok{ggplot}\NormalTok{(mtcars,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{mpg))}\SpecialCharTok{+}\FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-54-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#boxplot}
+\FunctionTok{ggplot}\NormalTok{(mtcars,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{as.factor}\NormalTok{(cyl),}\AttributeTok{y=}\NormalTok{mpg))}\SpecialCharTok{+}\FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{20BPS1022_PREYASH_CSE3505_30thSept_files/figure-latex/unnamed-chunk-54-2.pdf}
+
+\end{document}
